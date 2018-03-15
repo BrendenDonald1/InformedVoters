@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<!-- jQuery library (Needed for Bootstrap) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Bootstrap imports (For making things pretty) -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Angular JS imports (For the javascript and dynamic HTML - ng fields) -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<body>
+
+<script>
+var app = angular.module('proPublica', []);
+app.controller('searchCtrl', function($scope,$http) {
+    $scope.results = [];
+    $scope.details = null;
+
+    $scope.searchPP = function() {
+        $http({
+            method: 'GET',
+            url: 'https://api.propublica.org/congress/v1/bills/subjects/'+$scope.subject+'.json',
+            headers: {
+                'X-API-Key': 'I4uEMg1MfJZAXEOgt54GdjYMZBygYmtnmrd1dPsg'
+            }
+        }).then(function(result) {
+            $scope.results = result.data.results;
+        });
+    };
+
+    $scope.evaluateStatus = function(active) {
+        if(active === true) {
+            return 'Active';
+        } else {
+            return 'Inactive';
+        }
+    };
+
+    $scope.showDetails = function(result) {
+        $scope.details = result;
+    };
+
+    $scope.hideDetails = function() {
+        $scope.details = null;
+    };
+});
+</script>
+
+<div ng-app="proPublica" ng-controller="searchCtrl">
+    <div ng-hide="details">
+        <p>Subject : <input type="text" ng-model="subject">
+            <button type="button" class="btn btn-info" ng-click="searchPP()">Search</button>
+        </p>
+    </div>
+    <div ng-show="details">
+        <button type="button" class="btn btn-danger" ng-click="hideDetails()">Back</button>
+    </div>
+
+    <table class="table" ng-show="results.length>0 && !details">
+        <thread>
+            <tr>
+                <th scope="col">Status</th>
+                <th scope="col" style="width:100px">Date</th>
+                <th scope="col">Title</th>
+            </tr>
+        </thread>
+        <tbody>
+            <tr ng-repeat="result in results | orderBy:'-introduced_date'" ng-click="showDetails(result)">
+                <td>{{evaluateStatus(result.active)}}</td>
+                <td>{{result.introduced_date}}</td>
+                <td>{{result.title}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div ng-show="details">
+        <thread>
+            <h4>{{details.title}}</h4>
+            <p>{{details.summary}}</p>
+        </thread>
+    </div>
+</div>
+
+</body>
+</html>
