@@ -1,0 +1,60 @@
+<html>
+  <head>
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400;300' rel='stylesheet' type='text/css'>
+    <link href='Home.css' rel='stylesheet'>
+  </head>
+  <body>
+
+    <div class="menu">
+      
+      <!-- Menu icon -->
+      <div class="icon-close">
+        <img src="http://s3.amazonaws.com/codecademy-content/courses/ltp2/img/uber/close.png"><!-- delete this -->
+      </div>
+
+      <!-- Menu -->
+      <ul>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Vote</a></li>
+        <li><a href="#">Districts</a></li>
+        <li><a href="#">Legislators</a></li>
+		<li><a href="#">Glossary</a></li>
+		<li><a href="#">Bills</a></li>
+      </ul>
+    </div>
+
+    <!-- Main body -->
+    <div class="jumbotron">
+
+      <div class="icon-menu">Menu</div>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+	  var main = function() {
+        /* Push the body and the nav over by 285px over */
+        $('.icon-menu').click(function() {
+          $('.menu').animate({
+            left: '0px'
+          }, 200);
+
+          $('body').animate({
+            left: '285px'
+          }, 200);
+        });
+
+        /* Then push them back */
+        $('.icon-close').click(function() {
+          $('.menu').animate({
+            left: "-285px"
+          }, 200);
+
+            $('body').animate({
+              left: "0px"
+            }, 200);
+        });
+
+      $(document).ready(main);
+	</script>
+  </body>
+</html>
